@@ -1,0 +1,95 @@
+{
+    "filter": [
+        {
+            "key": "lang",
+            "operator": "equals",
+            "value": "en"
+        }
+    ],
+    "maps": [
+        {
+            "name": "SetCodeToName",
+            "duplicates": false,
+            "key": "set",
+            "value": "set_name"
+        },
+        {
+            "name": "CardIDToSetCode",
+            "duplicates": false,
+            "key": "id",
+            "value": "set"
+        },
+        {
+            "name": "CardIDToOracleID",
+            "duplicates": false,
+            "key": "id",
+            "value": "oracle_id"
+        },
+        {
+            "name": "OracleIDToCardID",
+            "duplicates": true,
+            "key": "oracle_id",
+            "value": "id"
+        },
+        {
+            "name": "SetCodeToCardID",
+            "duplicates": true,
+            "key": "set",
+            "value": "id"
+        },
+        {
+            "name": "CardIDToRarity",
+            "duplicates": false,
+            "key": "id",
+            "value": "rarity"
+        },
+        {
+            "name": "RarityToCardID",
+            "duplicates": true,
+            "key": "rarity",
+            "value": "id"
+        },
+        {
+            "name": "CMCToCardID",
+            "duplicates": true,
+            "key": "cmc",
+            "value": "id"
+        },
+        {
+            "name": "CardIDToCMC",
+            "duplicates": false,
+            "key": "id",
+            "value": "cmc"
+        },
+        {
+            "name": "CardIDToColorIdentity",
+            "duplicates": false,
+            "key": "id",
+            "value": "color_identity.join"
+        },
+        {
+            "name": "CardIDToColor",
+            "duplicates": false,
+            "key": "id",
+            "value": "colors.join"
+        },
+        {
+            "name": "CardIDToText",
+            "duplicates": false,
+            "key": "id",
+            "value": "oracle_text"
+        },
+        {
+            "name": "CardIDToPower",
+            "duplicates": false,
+            "key": "id",
+            "value": "power"
+        },
+        {
+            "name": "CardIDToToughness",
+            "duplicates": false,
+            "key": "id",
+            "value": "toughness"
+        }
+    ]
+}
