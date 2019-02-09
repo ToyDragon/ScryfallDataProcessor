@@ -13,7 +13,7 @@ Loads bulk data from scryfall, and processes it into smaller index files useful 
     }
 
 # Usage
-Install globally and use the CLI to manage your indices.
+You can download the default indices directly from the Files directory in this repository for initial prototyping, but I strongly recommend you install the package and maintain the maps on your own. You will be insulated from any bugs that get committed, and you will be able to update the maps whenever you want. To do so install the package globally and use the CLI
 
 > npm install -g scryfalldataprocessor
 
