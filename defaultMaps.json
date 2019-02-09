@@ -4,6 +4,11 @@
             "key": "lang",
             "operator": "equals",
             "value": "en"
+        },
+        {
+            "key": "layout",
+            "operator": "notequals",
+            "value": "token"
         }
     ],
     "maps": [
@@ -12,6 +17,12 @@
             "duplicates": false,
             "key": "set",
             "value": "set_name"
+        },
+        {
+            "name": "CardIDToName",
+            "duplicates": false,
+            "key": "id",
+            "value": "name"
         },
         {
             "name": "CardIDToSetCode",
@@ -63,21 +74,45 @@
         },
         {
             "name": "CardIDToColorIdentity",
-            "duplicates": false,
+            "duplicates": true,
             "key": "id",
-            "value": "color_identity.join"
+            "value": "color_identity"
+        },
+        {
+            "name": "ColorIdentityToCardID",
+            "duplicates": true,
+            "key": "color_identity",
+            "value": "id"
         },
         {
             "name": "CardIDToColor",
-            "duplicates": false,
+            "duplicates": true,
             "key": "id",
-            "value": "colors.join"
+            "value": "colors"
+        },
+        {
+            "name": "ColorToCardID",
+            "duplicates": true,
+            "key": "colors",
+            "value": "id"
+        },
+        {
+            "name": "OracleIDToText",
+            "duplicates": false,
+            "key": "oracle_id",
+            "value": "oracle_text"
         },
         {
             "name": "CardIDToText",
             "duplicates": false,
             "key": "id",
             "value": "oracle_text"
+        },
+        {
+            "name": "CardIDToMultiverseId",
+            "duplicates": false,
+            "key": "id",
+            "value": "multiverse_ids.0"
         },
         {
             "name": "CardIDToPower",
@@ -90,6 +125,42 @@
             "duplicates": false,
             "key": "id",
             "value": "toughness"
+        },
+        {
+            "name": "CardIDToTokens",
+            "duplicates": true,
+            "key": "id",
+            "value": "all_parts.tokenid"
+        },
+        {
+            "name": "CardIDToTypes",
+            "duplicates": true,
+            "key": "id",
+            "value": "type_line.parseTypes"
+        },
+        {
+            "name": "CardIDToSubTypes",
+            "duplicates": true,
+            "key": "id",
+            "value": "type_line.parseSubTypes"
+        },
+        {
+            "name": "CardIDToSuperTypes",
+            "duplicates": true,
+            "key": "id",
+            "value": "type_line.parseSuperTypes"
+        },
+        {
+            "name": "CardIDToLegalFormats",
+            "duplicates": true,
+            "key": "id",
+            "value": "legalities.islegal"
+        },
+        {
+            "name": "CardIDToNormalImageURI",
+            "duplicates": false,
+            "key": "id",
+            "value": "image_uris.normal"
         }
     ]
 }

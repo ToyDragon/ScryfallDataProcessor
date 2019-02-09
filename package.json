@@ -1,10 +1,13 @@
 {
   "name": "scryfalldataprocessor",
-  "version": "0.0.1",
+  "version": "0.0.9",
   "description": "Processes data from scryfall into a more usable format",
   "main": "index.js",
   "dependencies": {
     "mtgtypes": "^1.0.2"
+  },
+  "bin": {
+    "sfdata": "./cli"
   },
   "devDependencies": {},
   "scripts": {

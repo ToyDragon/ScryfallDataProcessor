@@ -18,4 +18,28 @@ export default class ArgsParser{
             }
         }
     }
+
+    public hasArg(keyword: string): boolean{
+        if(Array.isArray(this.args[keyword])){
+            return true;
+        }
+        if(Array.isArray(this.args[keyword.charAt(0)])){
+            return true;
+        }
+        return false;
+    }
+
+    public getValue(keyword: string, def: string): string{
+        let value = "";
+        if(this.args[keyword]){
+            value = this.args[keyword][0]
+        }else if(this.args[keyword.charAt(0)]){
+            value = this.args[keyword.charAt(0)][0];
+        }
+        if(!value){
+            value = def;
+        }
+
+        return value;
+    }
 }

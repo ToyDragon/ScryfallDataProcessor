@@ -11,17 +11,11 @@ export default class AllCardsDownloader{
 
     public currentDate(): Promise<Date>{
         return new Promise((resolve, _reject) => {
-            fs.exists(this.localCardFile, (exists) => {
-                if(!exists){
+            fs.stat(this.localCardFile, (err, stats) => {
+                if(err || !stats){
                     resolve(null);
                 }else{
-                    fs.stat(this.localCardFile, (err, stats) => {
-                        if(err || !stats){
-                            resolve(null);
-                        }else{
-                            resolve(stats.ctime);
-                        }
-                    });
+                    resolve(stats.ctime);
                 }
             });
         });
@@ -30,11 +24,28 @@ export default class AllCardsDownloader{
     public exec(quiet?: boolean): Promise<void>{
         const allCardsUrl = "https://archive.scryfall.com/json/scryfall-all-cards.json";
         const esc = String.fromCharCode(27);
-
         const clearLine = esc + "[2k";
         const gotoLineStart = esc + "[1G";
 
         return new Promise((resolve, _reject) => {
+            let pieces = this.localCardFile.split("/");
+            let piecesSoFar = "";
+            for(let i = 0; i < pieces.length - 1; i++){
+                let piece = pieces[i];
+                if(piecesSoFar === ""){
+                    piecesSoFar = piece;
+                }else{
+                    piecesSoFar += "/" + piece;
+                }
+                if(piece === "." || piece === ".."){
+                    continue;
+                }
+                try{
+                    let stat = fs.statSync(piecesSoFar);
+                }catch(_err){
+                    fs.mkdirSync(piecesSoFar);
+                }
+            }
             let ws = fs.createWriteStream(this.localCardFile);
             let totalSize = 0;
             let lastMB = -1;
@@ -42,7 +53,7 @@ export default class AllCardsDownloader{
 
             https.get(allCardsUrl, (response) => {
                 if(!quiet){
-                    console.log("Connected");
+                    console.log("Saving to " + this.localCardFile);
                 }
                 response.pipe(ws);
                 

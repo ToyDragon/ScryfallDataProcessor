@@ -1,0 +1,22 @@
+{
+    "filter": [
+        {
+            "key": "lang",
+            "operator": "equals",
+            "value": "en"
+        },
+        {
+            "key": "layout",
+            "operator": "equals",
+            "value": "token"
+        }
+    ],
+    "maps": [
+        {
+            "name": "TokenIDToName",
+            "duplicates": false,
+            "key": "id",
+            "value": "name"
+        }
+    ]
+}

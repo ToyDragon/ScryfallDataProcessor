@@ -3,37 +3,33 @@ import AllCardsDownloader from "./AllCardsDownloader";
 import MapFile from "./MapFile";
 import MapConstructor from "./MapConstructor";
 
-const localCardFile = "./Files/AllCards.json";
-const args = new ArgsParser(process.argv).args;
+const args = new ArgsParser(process.argv);
+
+const localCardFile = args.getValue("input", "./Files/AllCards.json");
+const outputDir = args.getValue("output", "./Files");
 const dl = new AllCardsDownloader(localCardFile);
 
 dl.currentDate().then((cardsDate) => {
-    if(args["a"] || args["allcards"]){
-        if(args["f"]){
+    if(args.hasArg("allcards")){
+        if(args.hasArg("force")){
             dl.exec();
         }else{
-            let dist = new Date().getTime() - cardsDate.getTime();
+            let cardsTime = (cardsDate && cardsDate.getTime()) || 0;
+            let curTime = new Date().getTime();
+            let dist = curTime - cardsTime;
             if(dist > 1000*60*60*24){
-                console.log("Elapsed: " + dist);
                 dl.exec();
             }else{
                 console.log("Cancelled because set file is less than a day old. Use -f to override.")
             }
         }
-    } else if(args["p"] || args["process"]){
-        let rawMapFile = "";
-        if(args["p"]){
-            rawMapFile = args["p"][0]
-        }else if(args["process"]){
-            rawMapFile = args["process"][0];
-        }
-        if(!rawMapFile){
-            rawMapFile = "./defaultMaps.json";
-        }
+    } else if(args.hasArg("process")){
+        
+        let rawMapFile = args.getValue("process", __dirname + "/../defaultMaps.json");
         
         let mapFile = new MapFile(rawMapFile);
         mapFile.load().then(() => {
-            let processor = new MapConstructor(localCardFile, mapFile);
+            let processor = new MapConstructor(localCardFile, mapFile, outputDir);
             processor.process().then(()=>{
                 processor.saveMaps();
             });
@@ -42,9 +38,11 @@ dl.currentDate().then((cardsDate) => {
         });
 
     } else {
-        console.log("usage: node ScryfallDataProcessor [-a [-f]] [-p [mapfile]]");
-        console.log("  -a or -allcards   Update the file with all card data from Scryfall");
-        console.log("  -f                Force the file with all card date to be updated ignoring the time restriction");
-        console.log("  -p or -process    Process the Scryfall data into data maps. Optionally specify a mapfile describing what data to process, or use the default \"defaultMaps.json\"");
+        console.log("usage: node ScryfallDataProcessor [-a [-f]] [-i file] [-o dir] [-p [mapfile]]");
+        console.log("  -a[llcards]        Update the file with all card data from Scryfall");
+        console.log("  -f[orce]           Force the file with all card date to be updated ignoring the time restriction");
+        console.log("  -i[nput] <file>    Specify the location that the card data should be loaded from or saved to, or use the default \"./Files/AllCards.json\"");
+        console.log("  -o[output] <dir>   Specify the location that the map data should be saved, or use the default \"./Files\"")
+        console.log("  -p[rocess] <file>  Process the Scryfall data into data maps. Optionally specify a mapfile describing what data to process, or use the default \"defaultMaps.json\"");
     }
 });

@@ -3,7 +3,7 @@ import * as fs from "fs";
 
 export enum MapFilterOperator{
     Equals = "equals",
-    NotEquals = "not equals",
+    NotEquals = "notequals",
     Exists = "exists"
 }
 
