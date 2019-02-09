@@ -22,14 +22,22 @@ Use the -a flag to update the bulk data file from Scryfall, optionally with the 
 
 or 
 
-> sfData -a -i ../../Data/AllCards.json
+> sfdata -a -i ../../Data/AllCards.json
+
+Use the optional -f flag to override the 1 day cooldown on updated the AllSets.json file. Be mindful of your impact on Scryfall please.
+
+> sfdata -a -f
 
 Use the -p flag to construct the indices, optionally with a map template file or the default if not specified.
 > sfdata -p  
 
 or
 
-> sfData -p ./spanishCards.json
+> sfdata -p ./spanishCards.json
+
+Use the optional -o flag to specify a different output directory
+
+> sfdata -p -o ../../Data/Indices
 
 The default indices are:  
 ./Files/SetCodeToName.json - Maps set codes to set names  
