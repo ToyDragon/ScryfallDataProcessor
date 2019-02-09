@@ -18,41 +18,45 @@ You can download the default indices directly from the Files directory in this r
 > npm install -g scryfalldataprocessor
 
 Use the -a flag to update the bulk data file from Scryfall, optionally with the -i flag to specifiy the location of the AllCards.json file. If not specified the default location is ./Files/AllCards.json
-> sfdata -a
+> sfdata -a  
+
 or 
+
 > sfData -a -i ../../Data/AllCards.json
 
 Use the -p flag to construct the indices, optionally with a map template file or the default if not specified.
-> sfdata -p
+> sfdata -p  
+
 or
+
 > sfData -p ./spanishCards.json
 
-The default indices are:
-./Files/SetCodeToName.json - Maps set codes to set names
-./Files/CardIDToName.json - Maps Scryfall IDs to card names
-./Files/CardIDToSetCode.json - Maps Scryfall IDs to the code of the set it was printed in
-./Files/SetCodeToCardID.json - Maps set code to arrays of Scryfall IDs
-./Files/CardIDToOracleID.json - Maps Scryfall IDs to Oracle IDs
-./Files/OracleIDToCardID.json - Maps Oracle IDs to Scryfall IDs
-./Files/CardIDToRarity.json - Maps Scryfall IDs to rarity strings
-./Files/RarityToCardID.json - Maps rarity strings to arrays of Scryfall IDs
-./Files/CMCToCardID.json - Maps CMCs to arrays of Scryfall IDs
-./Files/CardIDToCMC.json - Maps Scryfall IDs to CMCs
-./Files/CardIDToColorIdentity.json - Maps Scryfall IDs to arrays of color strings
-./Files/ColorIdentityToCardID.json - Maps color strings to arrays of Scryfall IDs. Keys are single colors, multicolored cards show up in all relevant arrays.
-./Files/CardIDToColor.json - Maps Scryfall IDs to arrays of color strings
-./Files/ColorToCardID.json - Maps color strings to arrays of Scryfall IDs
-./Files/OracleIDToText.json - Maps Oracle IDs to oracle text
-./Files/CardIDToText.json - Maps Scryfall IDs to oracle text
-./Files/CardIDToMultiverseID.json - Maps Scryfall IDs to Multiverse IDs
-./Files/CardIDToPower.json - Maps Scryfall IDs to power strings
-./Files/CardIDToToughness.json - Maps Scryfall IDs to toughness strings
-./Files/CardIDToTokens.json - Maps Scryfall IDs to token Scryfall IDs
-./Files/CardIDToTypes.json - Maps Scryfall IDs to arrays of type strings
-./Files/CardIDToSubTypes.json - Maps Scryfall IDs to arrays of subtype strings
-./Files/CardIDToSuperTypes.json - Maps Scryfall IDs to arrays of supertype strings
-./Files/CardIDToLegalFormats.json - Maps Scryfall IDs to arrays of legal format names
-./Files/CardIDToNormalImageURI.json - Maps Scryfall IDs to normal sized image URIs
+The default indices are:  
+./Files/SetCodeToName.json - Maps set codes to set names  
+./Files/CardIDToName.json - Maps Scryfall IDs to card names  
+./Files/CardIDToSetCode.json - Maps Scryfall IDs to the code of the set it was printed in  
+./Files/SetCodeToCardID.json - Maps set code to arrays of Scryfall IDs  
+./Files/CardIDToOracleID.json - Maps Scryfall IDs to Oracle IDs  
+./Files/OracleIDToCardID.json - Maps Oracle IDs to Scryfall IDs  
+./Files/CardIDToRarity.json - Maps Scryfall IDs to rarity strings  
+./Files/RarityToCardID.json - Maps rarity strings to arrays of Scryfall IDs  
+./Files/CMCToCardID.json - Maps CMCs to arrays of Scryfall IDs  
+./Files/CardIDToCMC.json - Maps Scryfall IDs to CMCs  
+./Files/CardIDToColorIdentity.json - Maps Scryfall IDs to arrays of color strings  
+./Files/ColorIdentityToCardID.json - Maps color strings to arrays of Scryfall IDs. Keys are single colors, multicolored cards show up in all relevant arrays.  
+./Files/CardIDToColor.json - Maps Scryfall IDs to arrays of color strings  
+./Files/ColorToCardID.json - Maps color strings to arrays of Scryfall IDs  
+./Files/OracleIDToText.json - Maps Oracle IDs to oracle text  
+./Files/CardIDToText.json - Maps Scryfall IDs to oracle text  
+./Files/CardIDToMultiverseID.json - Maps Scryfall IDs to Multiverse IDs  
+./Files/CardIDToPower.json - Maps Scryfall IDs to power strings  
+./Files/CardIDToToughness.json - Maps Scryfall IDs to toughness strings  
+./Files/CardIDToTokens.json - Maps Scryfall IDs to token Scryfall IDs  
+./Files/CardIDToTypes.json - Maps Scryfall IDs to arrays of type strings  
+./Files/CardIDToSubTypes.json - Maps Scryfall IDs to arrays of subtype strings  
+./Files/CardIDToSuperTypes.json - Maps Scryfall IDs to arrays of supertype strings  
+./Files/CardIDToLegalFormats.json - Maps Scryfall IDs to arrays of legal format names  
+./Files/CardIDToNormalImageURI.json - Maps Scryfall IDs to normal sized image URIs  
 
 ## Map Template Files
 Create a map template file to alter the indices created and data in them. Map templates follow this structure:
