@@ -7,8 +7,28 @@
         },
         {
             "key": "layout",
-            "operator": "notequals",
+            "operator": "notcontains",
             "value": "token"
+        },
+        {
+            "key": "layout",
+            "operator": "notequals",
+            "value": "planar"
+        },
+        {
+            "key": "layout",
+            "operator": "notequals",
+            "value": "scheme"
+        },
+        {
+            "key": "type_line.parseTypes",
+            "operator": "notequals",
+            "value": "Conspiracy"
+        },
+        {
+            "key": "type_line.parseTypes",
+            "operator": "notequals",
+            "value": "Hero"
         }
     ],
     "maps": [
@@ -76,24 +96,24 @@
             "name": "CardIDToColorIdentity",
             "duplicates": true,
             "key": "id",
-            "value": "color_identity"
+            "value": "color_identity.orcolorless"
         },
         {
             "name": "ColorIdentityToCardID",
             "duplicates": true,
-            "key": "color_identity",
+            "key": "color_identity.orcolorless",
             "value": "id"
         },
         {
             "name": "CardIDToColor",
             "duplicates": true,
             "key": "id",
-            "value": "colors"
+            "value": "colors.orcolorless"
         },
         {
             "name": "ColorToCardID",
             "duplicates": true,
-            "key": "colors",
+            "key": "colors.orcolorless",
             "value": "id"
         },
         {
@@ -109,7 +129,7 @@
             "value": "oracle_text"
         },
         {
-            "name": "CardIDToMultiverseId",
+            "name": "CardIDToMultiverseID",
             "duplicates": false,
             "key": "id",
             "value": "multiverse_ids.0"
@@ -161,6 +181,12 @@
             "duplicates": false,
             "key": "id",
             "value": "image_uris.normal"
+        },
+        {
+            "name": "CardIDToTokenStrings",
+            "duplicates": true,
+            "key": "id",
+            "value": "oracle_text.parseTokens"
         }
     ]
 }

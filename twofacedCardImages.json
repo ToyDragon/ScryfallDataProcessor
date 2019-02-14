@@ -1,0 +1,22 @@
+{
+    "filter": [
+        {
+            "key": "lang",
+            "operator": "equals",
+            "value": "en"
+        },
+        {
+            "key": "layout",
+            "operator": "equals",
+            "value": "transform"
+        }
+    ],
+    "maps": [
+        {
+            "name": "FrontIDToBackLargeImageURI",
+            "duplicates": false,
+            "key": "id",
+            "value": "card_faces.1.image_uris.large"
+        }
+    ]
+}

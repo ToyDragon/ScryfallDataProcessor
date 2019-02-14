@@ -21,6 +21,27 @@ export default class AllCardsDownloader{
         });
     }
 
+    private ensureDirsExist(): void{
+        let pieces = this.localCardFile.split("/");
+        let piecesSoFar = "";
+        for(let i = 0; i < pieces.length - 1; i++){
+            let piece = pieces[i];
+            if(piecesSoFar === ""){
+                piecesSoFar = piece;
+            }else{
+                piecesSoFar += "/" + piece;
+            }
+            if(piece === "." || piece === ".."){
+                continue;
+            }
+            try{
+                fs.statSync(piecesSoFar);
+            }catch(_err){
+                fs.mkdirSync(piecesSoFar);
+            }
+        }
+    }
+
     public exec(quiet?: boolean): Promise<void>{
         const allCardsUrl = "https://archive.scryfall.com/json/scryfall-all-cards.json";
         const esc = String.fromCharCode(27);
@@ -28,24 +49,7 @@ export default class AllCardsDownloader{
         const gotoLineStart = esc + "[1G";
 
         return new Promise((resolve, _reject) => {
-            let pieces = this.localCardFile.split("/");
-            let piecesSoFar = "";
-            for(let i = 0; i < pieces.length - 1; i++){
-                let piece = pieces[i];
-                if(piecesSoFar === ""){
-                    piecesSoFar = piece;
-                }else{
-                    piecesSoFar += "/" + piece;
-                }
-                if(piece === "." || piece === ".."){
-                    continue;
-                }
-                try{
-                    let stat = fs.statSync(piecesSoFar);
-                }catch(_err){
-                    fs.mkdirSync(piecesSoFar);
-                }
-            }
+            this.ensureDirsExist();
             let ws = fs.createWriteStream(this.localCardFile);
             let totalSize = 0;
             let lastMB = -1;
@@ -73,6 +77,7 @@ export default class AllCardsDownloader{
                         console.log();
                         console.log("Done!");
                     }
+                    ws.close();
                     resolve();
                 });
             });

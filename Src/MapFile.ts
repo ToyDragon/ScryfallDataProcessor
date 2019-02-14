@@ -1,12 +1,6 @@
 import { ScryfallFullCard } from "mtgtypes";
 import * as fs from "fs";
 
-export enum MapFilterOperator{
-    Equals = "equals",
-    NotEquals = "notequals",
-    Exists = "exists"
-}
-
 interface RawMapFilter{
     key?: keyof ScryfallFullCard;
     value?: keyof ScryfallFullCard;
@@ -20,7 +14,15 @@ interface RawMapDetails{
     value: string;
 }
 
-interface RawMapFileData{
+export enum MapFilterOperator{
+    Equals = "equals",
+    NotEquals = "notequals",
+    Exists = "exists",
+    Contains = "contains",
+    NotContains = "notcontains"
+}
+
+export interface RawMapFileData{
     filter?: RawMapFilter[];
     maps?: RawMapDetails[];
 }
@@ -30,11 +32,15 @@ export default class MapFile{
     public data: RawMapFileData;
     private path: string;
 
-    public constructor(path: string){
-        this.path = path;
+    public constructor(pathOrMapdata: string | RawMapFileData){
+        if(typeof(pathOrMapdata) === "string"){
+            this.path = pathOrMapdata;
+        }else{
+            this.data = pathOrMapdata;
+        }
     }
 
-    public load(): Promise<void>{
+    public loadFromFile(): Promise<void>{
         return new Promise((resolve, reject) => {
             fs.exists(this.path, (exists) => {
                 if(!exists){
@@ -58,7 +64,7 @@ export default class MapFile{
         });
     }
 
-    private verifyData(): string{
+    public verifyData(): string{
         if(!this.data) return "Unable to find root object.";
         if(this.data.filter){
             if(!Array.isArray(this.data.filter)) return "Filters are not an array.";
@@ -72,7 +78,9 @@ export default class MapFile{
                 if(f.value.length <= 0) return "Filter value is empty.";
                 if(f.operator !== MapFilterOperator.Equals
                     && f.operator !== MapFilterOperator.NotEquals
-                    && f.operator !== MapFilterOperator.Exists) return "Filter operator inavlid.";
+                    && f.operator !== MapFilterOperator.Exists
+                    && f.operator !== MapFilterOperator.Contains
+                    && f.operator !== MapFilterOperator.NotContains) return "Filter operator inavlid.";
             }
         }
         

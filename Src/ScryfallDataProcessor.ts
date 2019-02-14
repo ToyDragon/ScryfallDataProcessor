@@ -1,48 +1,64 @@
-import ArgsParser from "./ArgsParser";
 import AllCardsDownloader from "./AllCardsDownloader";
-import MapFile from "./MapFile";
+import MapFile, { RawMapFileData } from "./MapFile";
 import MapConstructor from "./MapConstructor";
 
-const args = new ArgsParser(process.argv);
-
-const localCardFile = args.getValue("input", "./Files/AllCards.json");
-const outputDir = args.getValue("output", "./Files");
-const dl = new AllCardsDownloader(localCardFile);
-
-dl.currentDate().then((cardsDate) => {
-    if(args.hasArg("allcards")){
-        if(args.hasArg("force")){
-            dl.exec();
-        }else{
-            let cardsTime = (cardsDate && cardsDate.getTime()) || 0;
-            let curTime = new Date().getTime();
-            let dist = curTime - cardsTime;
-            if(dist > 1000*60*60*24){
-                dl.exec();
+export default class ScryfallDataProcessor{
+    /**
+     * Ensures the all cards file is less than 24 hours old. If it is that old, or is not present, a new copy is downloaded.
+     * @param fileLocation URI of the all cards file. Directories will be created if not already present.
+     * @param ignoreTimeLimit True if the file should be updated, even if it's less than 24 hours old.
+     */
+    public static UpdateAllCardsFile(fileLocation: string, ignoreTimeLimit: boolean, quite?: boolean): Promise<void> {
+        return new Promise((resolve, reject) => {
+            const dl = new AllCardsDownloader(fileLocation);
+            if(ignoreTimeLimit){
+                dl.exec(!!quite).then(() => {
+                    resolve();
+                });
             }else{
-                console.log("Cancelled because set file is less than a day old. Use -f to override.")
+                dl.currentDate().then((cardsDate) => {
+                    let cardsTime = (cardsDate && cardsDate.getTime()) || 0;
+                    let curTime = new Date().getTime();
+                    let dist = curTime - cardsTime;
+                    if(dist > 1000*60*60*24){
+                        dl.exec(!!quite).then(() => {
+                            resolve();
+                        })
+                    }else{
+                        resolve();
+                    }
+                });
             }
-        }
-    } else if(args.hasArg("process")){
-        
-        let rawMapFile = args.getValue("process", __dirname + "/../defaultMaps.json");
-        
-        let mapFile = new MapFile(rawMapFile);
-        mapFile.load().then(() => {
-            let processor = new MapConstructor(localCardFile, mapFile, outputDir);
-            processor.process().then(()=>{
-                processor.saveMaps();
-            });
-        }).catch((err) => {
-            console.log("Invalid map file: " + err);
         });
-
-    } else {
-        console.log("usage: node ScryfallDataProcessor [-a [-f]] [-i file] [-o dir] [-p [mapfile]]");
-        console.log("  -a[llcards]        Update the file with all card data from Scryfall");
-        console.log("  -f[orce]           Force the file with all card date to be updated ignoring the time restriction");
-        console.log("  -i[nput] <file>    Specify the location that the card data should be loaded from or saved to, or use the default \"./Files/AllCards.json\"");
-        console.log("  -o[output] <dir>   Specify the location that the map data should be saved, or use the default \"./Files\"")
-        console.log("  -p[rocess] <file>  Process the Scryfall data into data maps. Optionally specify a mapfile describing what data to process, or use the default \"defaultMaps.json\"");
     }
-});
+
+    /**
+     * Generates data indices
+     * @param fileLocation Location of the all cards file
+     * @param outputDir Directory to save indices
+     * @param mapData Data for maps to generate
+     */
+    public static GenerateIndices(fileLocation: string, outputDir: string, mapData: RawMapFileData): Promise<void>{
+        return new Promise((resolve, reject) => {
+            if(!fileLocation){
+                reject("Missing all cards file location");
+            }else if(!outputDir){
+                reject("Missing index output directory");
+            }else{
+                let mapFile = new MapFile(mapData);
+        
+                let error = mapFile.verifyData();
+                if(error){
+                    reject("Map data invalid");
+                }else{
+                    let processor = new MapConstructor(fileLocation, mapFile, outputDir);
+                    processor.process().then(()=>{
+                        processor.saveMaps().then(() => {
+                            resolve();
+                        });
+                    });
+                }
+            }
+        });
+    }
+}

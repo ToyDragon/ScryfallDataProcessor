@@ -1,8 +1,9 @@
 {
   "name": "scryfalldataprocessor",
-  "version": "0.0.9",
+  "version": "0.0.28",
   "description": "Processes data from scryfall into a more usable format",
-  "main": "index.js",
+  "main": "bin/ScryfallDataProcessor.js",
+  "types": "bin/ScryfallDataProcessor.d.ts",
   "dependencies": {
     "mtgtypes": "^1.0.2"
   },

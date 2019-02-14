@@ -17,6 +17,18 @@
             "duplicates": false,
             "key": "id",
             "value": "name"
+        },
+        {
+            "name": "TokenIDToNormalImageURI",
+            "duplicates": false,
+            "key": "id",
+            "value": "image_uris.normal"
+        },
+        {
+            "name": "TokenIDToTokenString",
+            "duplicates": false,
+            "key": "id",
+            "value": "tokenstring"
         }
     ]
 }
