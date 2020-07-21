@@ -26,7 +26,7 @@ export default class MapConstructor{
         const gotoLineStart = esc + "[1G";
 
         return new Promise((resolve, _reject) => {
-            let stream = fs.createReadStream(this.localCardFile, {encoding: "UTF8"});
+            let stream = fs.createReadStream(this.localCardFile, {encoding: "UTF8" as any});
             let buffer = "";
             let cards = 0;
             stream.on("data", (data: string) => {

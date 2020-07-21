@@ -5,6 +5,7 @@
   "main": "bin/ScryfallDataProcessor.js",
   "types": "bin/ScryfallDataProcessor.d.ts",
   "dependencies": {
+    "@types/node": "^14.0.24",
     "mtgtypes": "^1.0.2"
   },
   "bin": {

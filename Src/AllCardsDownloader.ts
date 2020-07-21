@@ -43,42 +43,66 @@ export default class AllCardsDownloader{
     }
 
     public exec(quiet?: boolean): Promise<void>{
-        const allCardsUrl = "https://archive.scryfall.com/json/scryfall-all-cards.json";
+        const allCardsDataUrl = "https://api.scryfall.com/bulk-data";
         const esc = String.fromCharCode(27);
         const clearLine = esc + "[2k";
         const gotoLineStart = esc + "[1G";
 
         return new Promise((resolve, _reject) => {
             this.ensureDirsExist();
-            let ws = fs.createWriteStream(this.localCardFile);
-            let totalSize = 0;
-            let lastMB = -1;
-            let maxMB = "688 MB"; //scryfall has no content-length header
-
-            https.get(allCardsUrl, (response) => {
-                if(!quiet){
-                    console.log("Saving to " + this.localCardFile);
-                }
-                response.pipe(ws);
-                
-                response.on("data", (chunk) => {
-                    
-                    totalSize += chunk.length;
-                    let curMB = Math.floor(totalSize/(1024*1024));
-                    if(curMB > lastMB){
-                        lastMB = curMB;
-                        if(!quiet){
-                            process.stdout.write(clearLine + gotoLineStart + curMB + "/" + maxMB);
+            https.get(allCardsDataUrl, (allCardsDataResponse) => {
+                let result = "";
+                allCardsDataResponse.on("data", (chunk) => {
+                    result += chunk;
+                });
+                allCardsDataResponse.on("end", () => {
+                    let resultObj = JSON.parse(result);
+                    let dataObj = null;
+                    for (let i = 0; i < resultObj.data.length; ++i){
+                        if (resultObj.data[i].type === "all_cards"){
+                            dataObj = resultObj.data[i];
                         }
                     }
-                });
-                response.on("end", () => {
-                    if(!quiet){
-                        console.log();
-                        console.log("Done!");
+                    if(!dataObj){
+                        console.log("Couldn't load All Cards location.");
+                    }else{
+                        let totalSize = 0;
+                        let lastMB = -1;
+                        let allCardsUrl = dataObj.download_uri;
+                        let maxMB = Math.floor((dataObj.compressed_size / (1024*1024)) * 6.29) + " MB";
+
+                        let ws = fs.createWriteStream(this.localCardFile);
+
+                        if(!quiet){
+                            console.log("Loading data from: " + allCardsUrl);
+                        }
+                        https.get(allCardsUrl, (response) => {
+                            if(!quiet){
+                                console.log("Saving to " + this.localCardFile);
+                            }
+                            response.pipe(ws);
+                            
+                            response.on("data", (chunk) => {
+                                
+                                totalSize += chunk.length;
+                                let curMB = Math.floor(totalSize/(1024*1024));
+                                if(curMB > lastMB){
+                                    lastMB = curMB;
+                                    if(!quiet){
+                                        process.stdout.write(clearLine + gotoLineStart + curMB + "/" + maxMB);
+                                    }
+                                }
+                            });
+                            response.on("end", () => {
+                                if(!quiet){
+                                    console.log();
+                                    console.log("Done!");
+                                }
+                                ws.close();
+                                resolve();
+                            });
+                        });
                     }
-                    ws.close();
-                    resolve();
                 });
             });
         });
