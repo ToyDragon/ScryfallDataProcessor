@@ -1,6 +1,6 @@
 {
   "name": "scryfalldataprocessor",
-  "version": "0.0.30",
+  "version": "0.0.36",
   "description": "Processes data from scryfall into a more usable format",
   "main": "bin/ScryfallDataProcessor.js",
   "types": "bin/ScryfallDataProcessor.d.ts",
