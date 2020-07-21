@@ -119,7 +119,7 @@ export default class MapConstructor{
             subtypes = this.cleanTokenString(typeResult[2] + "");
         }
 
-        let modifiers = token.oracle_text.split(/[\n\(]/)[0].split(",").join("");
+        let modifiers = (token.oracle_text || "").split(/[\n\(]/)[0].split(",").join("");
         if(modifiers.indexOf("{") === 0){
             modifiers = "";
         }
