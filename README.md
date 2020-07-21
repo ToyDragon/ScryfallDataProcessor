@@ -1,3 +1,17 @@
+# Does this tool work?
+No. Scryfall removed the API endpoint this was based on. If you want this functionality I recommend you either
+a: Don't use Scryfall, or
+b: Update this to use Scryfalls paginated APIs instead.
+
+I am very salty that Scryfall made breaking changes with a short turnaround, so I am not going to fix this.
+
+
+
+
+
+
+
+
 # Scryfall Data Processor
 Loads bulk data from scryfall, and processes it into smaller index files useful for web applications. Index files are large key value maps that contain very specific data. For example, the generated index "CardIDToName.json" would contain:
 
